@@ -1,56 +1,82 @@
-# Job Tracker Split App
+# Job Tracker App
 
-This version of Job Tracker is split into a React frontend and a Flask API backend.
+A full-stack job tracker built with React, Flask, and MySQL, developed as a DevOps portfolio project focused on Docker, AWS, CI/CD, and Terraform.
 
-## Project structure
+## Overview
+
+This project started as a job tracking application and is being expanded into an end-to-end DevOps showcase project. The goal is to demonstrate both application development and infrastructure/deployment skills in a practical, interview-ready way.
+
+## Tech Stack
+
+- Frontend: React + Vite
+- Backend: Flask
+- Database: MySQL
+- DevOps roadmap: Docker, AWS, GitHub Actions CI/CD, Terraform, monitoring
+
+## Current Features
+
+- User registration and login
+- Session-based authentication
+- Password reset using `username + birth_date + new password`
+- Job CRUD operations
+- Job search
+- Application status tracking:
+  - `in_progress`
+  - `interview`
+  - `offer`
+  - `rejected`
+- Dashboard list shows `title + company`
+- Status can be updated directly from the detail panel
+
+## Project Goal
+
+This repository is being built as a portfolio project for DevOps / Cloud Engineering roles. The implementation plan is:
+
+1. Build and run the app locally
+2. Containerize it with Docker
+3. Deploy it to AWS
+4. Add CI/CD with GitHub Actions
+5. Provision infrastructure with Terraform
+6. Add observability with Prometheus and Grafana
+
+## Project Structure
 
 - `frontend/`: React + Vite client
 - `backend/`: Flask JSON API
 - `database/schema.sql`: MySQL schema
-- `.env`: shared backend environment variables
+- `.env`: backend environment variables for local development
 
-## Backend setup
+## Local Development
 
-1. Create a virtual environment.
-2. Install dependencies from `backend/requirements.txt`.
-3. Make sure MySQL is running and create the schema with `database/schema.sql`.
-4. Keep the `.env` values updated for your local database.
-5. Run `python app.py` from the `backend/` directory.
+### Backend
+
+```bash
+cd backend
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python app.py
+```
 
 The backend runs on `http://127.0.0.1:5001`.
 
-## Frontend setup
+### Frontend
 
-1. Run `npm install` inside `frontend/`.
-2. Run `npm run dev`.
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
 The frontend runs on `http://127.0.0.1:5173` and proxies `/api` requests to the Flask backend.
 
-## New features
+## Database
 
-- Job application status with these values: `in_progress`, `interview`, `offer`, `rejected`
-- Password reset using `username + birth_date + new password`
-- Dashboard list shows `title + company`
-- Status can be updated directly from the detail panel
+Create the schema from:
 
-## Notes
+- `database/schema.sql`
 
-- Backend registration bug in `backend/app.py` has already been fixed
-- `.env` contains backend environment variables and should not be committed
-
-## Suggested project direction
-
-This repo is being turned into a DevOps portfolio project. Current priority:
-
-1. Docker
-2. ECS / Fargate
-3. Terraform
-4. CI/CD
-5. EKS later if it adds clear value
-
-## Database update for an existing local setup
-
-If you already created the old schema, run these statements once:
+If you already created the older local schema, run these statements once:
 
 ```sql
 USE job_tracker;
@@ -62,7 +88,7 @@ ALTER TABLE jobs
 ADD COLUMN status VARCHAR(32) NOT NULL DEFAULT 'in_progress';
 ```
 
-## Available API endpoints
+## API Endpoints
 
 - `GET /api/health`
 - `GET /api/session`
@@ -75,3 +101,8 @@ ADD COLUMN status VARCHAR(32) NOT NULL DEFAULT 'in_progress';
 - `GET /api/jobs/<id>`
 - `PUT /api/jobs/<id>`
 - `DELETE /api/jobs/<id>`
+
+## Notes
+
+- `.env` is required for backend configuration and should not be committed
+- This project is actively evolving from an application project into a full DevOps portfolio project

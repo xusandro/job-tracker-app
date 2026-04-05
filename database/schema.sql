@@ -1,0 +1,23 @@
+CREATE DATABASE IF NOT EXISTS job_tracker;
+USE job_tracker;
+
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    birth_date DATE NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS jobs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    company VARCHAR(255) NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    website VARCHAR(255),
+    job_link TEXT,
+    description LONGTEXT,
+    status VARCHAR(32) NOT NULL DEFAULT 'in_progress',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);

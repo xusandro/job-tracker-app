@@ -1,10 +1,6 @@
 :root {
   font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
   color: #f5f7fb;
-  background:
-    radial-gradient(circle at top left, rgba(74, 222, 128, 0.18), transparent 30%),
-    radial-gradient(circle at right, rgba(56, 189, 248, 0.16), transparent 25%),
-    linear-gradient(145deg, #07111f, #0d1728 48%, #111827);
 }
 
 * {
@@ -14,7 +10,18 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: transparent;
+  background: #07111f;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(circle at top left, rgba(74, 222, 128, 0.18), transparent 30%),
+    radial-gradient(circle at right, rgba(56, 189, 248, 0.16), transparent 25%),
+    linear-gradient(145deg, #07111f, #0d1728 48%, #111827);
 }
 
 button,
@@ -84,10 +91,12 @@ label {
 .auth-card,
 .panel,
 .hero {
-  backdrop-filter: blur(18px);
-  background: rgba(15, 23, 42, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  background: rgba(15, 23, 42, 0.82);
   border: 1px solid rgba(148, 163, 184, 0.14);
   box-shadow: 0 18px 60px rgba(15, 23, 42, 0.28);
+  will-change: transform;
 }
 
 .auth-card {

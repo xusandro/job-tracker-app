@@ -68,7 +68,7 @@ npm install
 npm run dev
 ```
 
-The frontend runs on `http://127.0.0.1:5173` and proxies `/api` requests to the Flask backend.
+The frontend runs on `http://localhost:5173/` and proxies `/api` requests to the Flask backend.
 
 ## Database
 

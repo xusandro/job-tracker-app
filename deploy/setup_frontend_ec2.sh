@@ -55,6 +55,9 @@ EOF
 ln -sf /etc/nginx/sites-available/jobtracker /etc/nginx/sites-enabled/jobtracker
 rm -f /etc/nginx/sites-enabled/default
 
+# ── Fix permissions so Nginx (www-data) can read /home/ubuntu/ ───────────────
+chmod o+x /home/ubuntu
+
 nginx -t
 systemctl enable --now nginx
 systemctl reload nginx

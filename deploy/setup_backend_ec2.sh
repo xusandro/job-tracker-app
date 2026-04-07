@@ -33,10 +33,10 @@ apt-get install -y python3-venv python3-pip
 # ── Python venv + deps ────────────────────────────────────────────────────────
 echo "==> Setting up Python virtualenv..."
 cd "$ROOT/backend"
-python3 -m venv .venv
-.venv/bin/pip install --upgrade pip -q
-.venv/bin/pip install gunicorn -q
-.venv/bin/pip install -r requirements.txt -q
+sudo -u ubuntu python3 -m venv .venv
+sudo -u ubuntu .venv/bin/pip install --upgrade pip -q
+sudo -u ubuntu .venv/bin/pip install gunicorn cryptography -q
+sudo -u ubuntu .venv/bin/pip install -r requirements.txt -q
 
 # ── Gunicorn systemd service ──────────────────────────────────────────────────
 echo "==> Writing systemd service..."

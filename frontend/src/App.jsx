@@ -231,10 +231,7 @@ function Dashboard({
 
   return (
     <div className="page">
-      <div style={{ background: "#22c55e", color: "#fff", textAlign: "center", padding: "8px", fontSize: "14px", fontWeight: 600 }}>
-        CI/CD pipeline is working!
-      </div>
-      <header className="topbar">
+<header className="topbar">
         <div>
           <p className="eyebrow">Job Tracker</p>
           <h1>{user.username}'s dashboard</h1>

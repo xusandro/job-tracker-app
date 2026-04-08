@@ -1,0 +1,53 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          cd backend
+          python -m venv .venv
+          .venv/bin/pip install -r requirements.txt -q
+
+      - name: Run pytest
+        run: |
+          cd backend
+          .venv/bin/python -m pytest tests/ -v
+
+  deploy:
+    name: Deploy to EC2
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.BACKEND_EC2_IP }} >> ~/.ssh/known_hosts
+          ssh-keyscan -H ${{ secrets.FRONTEND_EC2_IP }} >> ~/.ssh/known_hosts
+
+      - name: Deploy backend
+        run: |
+          ssh ${{ secrets.EC2_USER }}@${{ secrets.BACKEND_EC2_IP }} \
+            "sudo bash ~/job-tracker-app/deploy/deploy.sh --backend"
+
+      - name: Deploy frontend
+        run: |
+          ssh ${{ secrets.EC2_USER }}@${{ secrets.FRONTEND_EC2_IP }} \
+            "sudo bash ~/job-tracker-app/deploy/deploy.sh --frontend"

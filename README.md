@@ -6,8 +6,6 @@ A full-stack job tracker built with React, Flask, and MySQL, developed as a DevO
 
 ![Dashboard](docs/screenshots/image1.png)
 
-![Job Detail](docs/screenshots/image2.png)
-
 ## Overview
 
 This project started as a job tracking application and is being expanded into an end-to-end DevOps showcase project. The goal is to demonstrate both application development and infrastructure/deployment skills in a practical, interview-ready way.

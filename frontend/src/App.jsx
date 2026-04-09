@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
 
+function formatDate(dateStr) {
+  if (!dateStr) return null;
+  return new Date(dateStr).toISOString().slice(0, 10);
+}
+
 const emptyForm = {
   company: "",
   title: "",
@@ -7,6 +12,7 @@ const emptyForm = {
   job_link: "",
   description: "",
   status: "in_progress",
+  applied_date: new Date().toISOString().slice(0, 10),
 };
 
 const statusOptions = [
@@ -185,6 +191,16 @@ function JobForm({ initialValues, onSubmit, onCancel, loading }) {
       </label>
 
       <label>
+        <span>Date Applied</span>
+        <input
+          name="applied_date"
+          type="date"
+          value={form.applied_date || ""}
+          onChange={handleChange}
+        />
+      </label>
+
+      <label>
         <span>Status</span>
         <select name="status" value={form.status} onChange={handleChange}>
           {statusOptions.map((option) => (
@@ -207,6 +223,8 @@ function JobForm({ initialValues, onSubmit, onCancel, loading }) {
   );
 }
 
+const PAGE_SIZE = 10;
+
 function Dashboard({
   user,
   jobs,
@@ -226,6 +244,13 @@ function Dashboard({
   formLoading,
   onLogout,
 }) {
+  const [page, setPage] = useState(0);
+
+  useEffect(() => { setPage(0); }, [jobs]);
+
+  const totalPages = Math.ceil(jobs.length / PAGE_SIZE);
+  const pagedJobs = jobs.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+
   const isCreating = formMode === "create";
   const isEditing = formMode === "edit";
 
@@ -270,6 +295,20 @@ function Dashboard({
         </form>
       </section>
 
+      <div className="stats-bar">
+        {[
+          { status: "in_progress", label: "In Progress" },
+          { status: "interview",   label: "Interview"   },
+          { status: "offer",       label: "Offer"       },
+          { status: "rejected",    label: "Rejected"    },
+        ].map(({ status, label }) => (
+          <div key={status} className={`stat-card ${status}`}>
+            <span className="stat-count">{jobs.filter((j) => j.status === status).length}</span>
+            <span className="stat-label">{label}</span>
+          </div>
+        ))}
+      </div>
+
       <div className="content-grid">
         <section className="panel">
           <div className="panel-header">
@@ -281,7 +320,7 @@ function Dashboard({
             <p className="empty-state">No jobs yet. Add your first application.</p>
           ) : (
             <div className="job-list">
-              {jobs.map((job) => (
+              {pagedJobs.map((job) => (
                 <div
                   key={job.id}
                   className={`job-card ${selectedJob?.id === job.id ? "active" : ""}`}
@@ -289,10 +328,19 @@ function Dashboard({
                   <button className="job-card-main" onClick={() => onSelect(job.id)}>
                     <strong>{job.title}</strong>
                     <span>{job.company}</span>
+                    {job.applied_date && <span className="applied-date">Applied {formatDate(job.applied_date)}</span>}
                   </button>
                   <div className={`status-chip ${job.status}`}>{job.status.replace("_", " ")}</div>
                 </div>
               ))}
+            </div>
+          )}
+
+          {totalPages > 1 && (
+            <div className="pagination">
+              <button className="secondary" onClick={() => setPage((p) => p - 1)} disabled={page === 0}>‹</button>
+              <span>{page + 1} / {totalPages}</span>
+              <button className="secondary" onClick={() => setPage((p) => p + 1)} disabled={page >= totalPages - 1}>›</button>
             </div>
           )}
         </section>
@@ -312,6 +360,7 @@ function Dashboard({
                         website: selectedJob.website || "",
                         job_link: selectedJob.job_link || "",
                         description: selectedJob.description || "",
+                        applied_date: selectedJob.applied_date || "",
                       }
                     : emptyForm
                 }
@@ -365,8 +414,8 @@ function Dashboard({
                   </div>
                 </div>
                 <div>
-                  <span className="label">Created</span>
-                  <p>{new Date(selectedJob.created_at).toLocaleString()}</p>
+                  <span className="label">Date Applied</span>
+                  <p>{formatDate(selectedJob.applied_date) || "Not set"}</p>
                 </div>
               </div>
 

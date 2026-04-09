@@ -170,6 +170,62 @@ label {
   margin-top: 1rem;
 }
 
+.stats-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 1rem;
+  border-radius: 20px;
+  border: 1px solid transparent;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.stat-count {
+  font-size: 1.9rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.75;
+}
+
+.stat-card.in_progress {
+  background: rgba(56, 189, 248, 0.1);
+  border-color: rgba(56, 189, 248, 0.2);
+  color: #7dd3fc;
+}
+
+.stat-card.interview {
+  background: rgba(250, 204, 21, 0.1);
+  border-color: rgba(250, 204, 21, 0.2);
+  color: #fde68a;
+}
+
+.stat-card.offer {
+  background: rgba(74, 222, 128, 0.1);
+  border-color: rgba(74, 222, 128, 0.2);
+  color: #86efac;
+}
+
+.stat-card.rejected {
+  background: rgba(248, 113, 113, 0.1);
+  border-color: rgba(248, 113, 113, 0.2);
+  color: #fca5a5;
+}
+
 .content-grid {
   display: grid;
   grid-template-columns: 360px 1fr;
@@ -241,6 +297,11 @@ label {
   font-size: 0.92rem;
 }
 
+.applied-date {
+  font-size: 0.78rem;
+  color: #64748b;
+}
+
 .status-chip {
   width: fit-content;
   border-radius: 999px;
@@ -302,6 +363,22 @@ label {
   white-space: pre-wrap;
 }
 
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  font-size: 0.88rem;
+  color: #94a3b8;
+}
+
+.pagination button {
+  padding: 0.35rem 0.75rem;
+  font-size: 1rem;
+  border-radius: 10px;
+}
+
 .empty-state,
 .empty-detail {
   padding: 1.5rem;
@@ -335,6 +412,10 @@ label {
 }
 
 @media (max-width: 640px) {
+  .stats-bar {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
   .page {
     padding: 1rem;
   }

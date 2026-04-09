@@ -224,7 +224,7 @@ def list_jobs():
                           job_link LIKE %s OR
                           description LIKE %s
                       )
-                    ORDER BY id DESC
+                    ORDER BY applied_date IS NULL, applied_date DESC, id DESC
                     """,
                     (
                         session["user_id"],
@@ -242,7 +242,7 @@ def list_jobs():
                     SELECT *
                     FROM jobs
                     WHERE user_id = %s
-                    ORDER BY id DESC
+                    ORDER BY applied_date IS NULL, applied_date DESC, id DESC
                     """,
                     (session["user_id"],),
                 )
@@ -264,6 +264,7 @@ def create_job():
     job_link = data.get("job_link", "").strip()
     description = data.get("description", "").strip()
     status = normalize_job_status(data.get("status"))
+    applied_date = validate_birth_date(data.get("applied_date", "").strip()) if data.get("applied_date") else None
 
     if not company or not title:
         return jsonify({"error": "Company and job title are required."}), 400
@@ -276,8 +277,8 @@ def create_job():
         with conn.cursor() as cursor:
             cursor.execute(
                 """
-                INSERT INTO jobs (user_id, company, title, website, job_link, description, status)
-                VALUES (%s, %s, %s, %s, %s, %s, %s)
+                INSERT INTO jobs (user_id, company, title, website, job_link, description, status, applied_date)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
                 """,
                 (
                     session["user_id"],
@@ -287,6 +288,7 @@ def create_job():
                     job_link,
                     description,
                     status,
+                    applied_date,
                 ),
             )
             job_id = cursor.lastrowid
@@ -340,6 +342,7 @@ def update_job(job_id):
     job_link = data.get("job_link", "").strip()
     description = data.get("description", "").strip()
     status = normalize_job_status(data.get("status"))
+    applied_date = validate_birth_date(data.get("applied_date", "").strip()) if data.get("applied_date") else None
 
     if not company or not title:
         return jsonify({"error": "Company and job title are required."}), 400
@@ -371,7 +374,8 @@ def update_job(job_id):
                     website = %s,
                     job_link = %s,
                     description = %s,
-                    status = %s
+                    status = %s,
+                    applied_date = %s
                 WHERE id = %s AND user_id = %s
                 """,
                 (
@@ -381,6 +385,7 @@ def update_job(job_id):
                     job_link,
                     description,
                     status,
+                    applied_date,
                     job_id,
                     session["user_id"],
                 ),

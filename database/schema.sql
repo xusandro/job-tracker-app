@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS jobs (
     job_link TEXT,
     description LONGTEXT,
     status VARCHAR(32) NOT NULL DEFAULT 'in_progress',
+    applied_date DATE NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );

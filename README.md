@@ -4,7 +4,7 @@ A full-stack job tracker built with React, Flask, and MySQL, developed as a DevO
 
 ## Screenshots
 
-![Start](docs/screenshots/image0.png)
+![Login](docs/screenshots/login.png)
 
 ![Dashboard](docs/screenshots/image1.png)
 

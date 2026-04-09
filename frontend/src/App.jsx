@@ -246,7 +246,10 @@ function Dashboard({
 }) {
   const [page, setPage] = useState(0);
 
-  useEffect(() => { setPage(0); }, [jobs]);
+  useEffect(() => {
+    const newTotalPages = Math.ceil(jobs.length / PAGE_SIZE);
+    if (page >= newTotalPages) setPage(0);
+  }, [jobs]);
 
   const totalPages = Math.ceil(jobs.length / PAGE_SIZE);
   const pagedJobs = jobs.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
@@ -625,6 +628,7 @@ export default function App() {
           website: selectedJob.website || "",
           job_link: selectedJob.job_link || "",
           description: selectedJob.description || "",
+          applied_date: selectedJob.applied_date || "",
           status,
         }),
       });
